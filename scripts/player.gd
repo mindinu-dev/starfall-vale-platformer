@@ -1,25 +1,30 @@
 extends CharacterBody2D
 
+@export var speed: float = 140.0
+@export var accel: float = 800.0 # Lower = more slide/drift, Higher = snappier stop
+@export var jump_velocity: float = -260.0
 
-const SPEED = 300.0
-const JUMP_VELOCITY = -400.0
-
+@onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 
 func _physics_process(delta: float) -> void:
-	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
-	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
+	if Input.is_action_just_pressed("jump") and is_on_floor():
+		velocity.y = jump_velocity
 
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction := Input.get_axis("ui_left", "ui_right")
-	if direction:
-		velocity.x = direction * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+	var direction := Input.get_axis("move_left", "move_right")
+	velocity.x = move_toward(velocity.x, direction * speed, accel * delta)
+
+	if direction != 0.0:
+		anim.flip_h = direction < 0.0
+
+	if not is_on_floor() and anim.sprite_frames and anim.sprite_frames.has_animation("jump"):
+		if anim.animation != "jump":
+			anim.play("jump")
+	elif abs(velocity.x) > 8.0 and anim.animation != "run":
+		anim.play("run")
+	elif abs(velocity.x) <= 8.0 and anim.animation != "idle":
+		anim.play("idle")
 
 	move_and_slide()
