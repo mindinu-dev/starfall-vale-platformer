@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://c0cul7l52erkq"]
+
+[ext_resource type="Script" uid="uid://bb8oqoq6fvcmy" path="res://scripts/main_menu.gd" id="1_0ykhv"]
+[ext_resource type="Texture2D" uid="uid://bdqi0mjnx1dfa" path="res://assets/images/background-menu.png" id="2_2wh52"]
+
+[node name="MainMenu" type="Control" unique_id=716165902]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0ykhv")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=452508463]
+layout_mode = 0
+offset_right = 1154.0
+offset_bottom = 648.0
+texture = ExtResource("2_2wh52")
+expand_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1717150473]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 390.0
+offset_top = 276.0
+offset_right = -354.0
+offset_bottom = -224.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="StartButton" type="Button" parent="VBoxContainer" unique_id=345982644]
+layout_mode = 2
+text = "Start"
+
+[node name="QuitButton" type="Button" parent="VBoxContainer" unique_id=93123907]
+layout_mode = 2
+text = "Quit"
+
+[connection signal="pressed" from="VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
